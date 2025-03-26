@@ -1,0 +1,27 @@
+using RestSharp;
+using Amazon.SellingPartnerAPIAA;
+
+string resource = "/my/api/path";
+RestClient restClient = new RestClient("https://...");
+IRestRequest restRequest = new RestRequest(resource, Method.GET);
+
+// Seller APIs
+LWAAuthorizationCredentials lwaAuthorizationCredentials = new LWAAuthorizationCredentials
+{
+    ClientId = "...",
+    ClientSecret = "",
+    RefreshToken = "",
+    Endpoint = new Uri("...")
+};
+
+/* Sellerless APIs
+The Selling Partner API scopes can be retrieved from the ScopeConstants class and used to specify a list of scopes of an LWAAuthorizationCredentials instance. */
+LWAAuthorizationCredentials lwaAuthorizationCredentials = new LWAAuthorizationCredentials
+{
+    ClientId = "...",
+    ClientSecret = "",
+    Scopes = new List<string>() { ScopeConstants.ScopeNotificationsAPI, ScopeConstants.ScopeMigrationAPI }
+    Endpoint = new Uri("...")
+};
+
+restRequest = new LWAAuthorizationSigner(lwaAuthorizationCredentials).Sign(restRequest);  
